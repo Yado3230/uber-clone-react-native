@@ -2,14 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface NavState {
-  origin: number;
-  destination: number;
+  origin: object | null;
+  destination: object | null;
   travelTimeInformation: number;
 }
 
 const initialState: NavState = {
-  origin: 0,
-  destination: 0,
+  origin: null,
+  destination: null,
   travelTimeInformation: 0,
 };
 
@@ -24,7 +24,7 @@ const navReducer = createSlice({
       state.destination = action.payload;
     },
     setTravelTimeInformation: (state, action: PayloadAction<number>) => {
-      state.origin = action.payload;
+      state.travelTimeInformation = action.payload;
     },
   },
 });

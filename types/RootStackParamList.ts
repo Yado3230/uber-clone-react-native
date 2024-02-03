@@ -1,7 +1,7 @@
 type RootStackParamList = {
-  Home: undefined;
-  Profile: { name: string };
-  Data: { name: string };
+  HomeScreen: undefined;
+  MapScreen: undefined;
+  EatsScreen: undefined;
 };
 
 export default RootStackParamList;

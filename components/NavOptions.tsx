@@ -1,6 +1,10 @@
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 import React, { FC } from "react";
 import tw from "tailwind-react-native-classnames";
+import { Icon } from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import RootStackParamList from "../types/RootStackParamList";
 
 type DataProps = {
   id: string;
@@ -24,6 +28,9 @@ const data: DataProps[] = [
 ];
 
 const NavOptions = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
     <FlatList
       data={data}
@@ -31,6 +38,9 @@ const NavOptions = () => {
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
         <TouchableOpacity
+          onPress={() =>
+            navigation.navigate(item.screen as keyof RootStackParamList)
+          }
           style={tw`p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40 rounded`}
         >
           <View>
@@ -39,6 +49,12 @@ const NavOptions = () => {
               source={{ uri: item.image }}
             />
             <Text style={tw`mt-2 text-lg font-semibold`}>{item.title}</Text>
+            <Icon
+              style={tw`p-2 bg-black rounded-full w-10 mt-4`}
+              name="arrowright"
+              color="white"
+              type="antdesign"
+            />
           </View>
         </TouchableOpacity>
       )}
