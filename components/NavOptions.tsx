@@ -5,6 +5,9 @@ import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import RootStackParamList from "../types/RootStackParamList";
+import { useSelector } from "react-redux";
+import { selectOrigin } from "../slices/navSlice";
+import { LocationType } from "../types/types";
 
 type DataProps = {
   id: string;
@@ -30,6 +33,7 @@ const data: DataProps[] = [
 const NavOptions = () => {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const origin: LocationType = useSelector(selectOrigin);
 
   return (
     <FlatList
@@ -41,9 +45,10 @@ const NavOptions = () => {
           onPress={() =>
             navigation.navigate(item.screen as keyof RootStackParamList)
           }
+          disabled={!origin}
           style={tw`p-2 pl-6 pb-8 pt-4 bg-gray-200 m-2 w-40 rounded`}
         >
-          <View>
+          <View style={tw`${!origin ? "opacity-20" : ""}`}>
             <Image
               style={{ width: 120, height: 120, resizeMode: "contain" }}
               source={{ uri: item.image }}
