@@ -8,7 +8,7 @@ import {
 import React from "react";
 import tw from "tailwind-react-native-classnames";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setDestination } from "../slices/navSlice";
 // @ts-ignore
 import { GOOGLE_MAPS_APIKEY } from "@env";
@@ -38,7 +38,7 @@ const NavigateCard = () => {
               dispatch(
                 setDestination({
                   location: details?.geometry.location,
-                  description: data.description,
+                  destination: data.description,
                 })
               );
               navigation.navigate("RideOptionsCard");

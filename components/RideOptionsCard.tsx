@@ -49,7 +49,7 @@ const RideOptionsCard = () => {
 
   const [selected, setSelected] = useState<DataProps | null>(null);
   const travelTimeInformation = useSelector(selectTravelTimeInformation);
-  const SURGE_CHARGE_RATE = 1.5;
+  const SURGE_CHARGE_RATE = 2.5;
 
   return (
     <SafeAreaView style={tw`bg-white flex-grow`}>
@@ -61,7 +61,7 @@ const RideOptionsCard = () => {
           <Icon name="chevron-left" type="font-awesome" />
         </TouchableOpacity>
         <Text style={tw`text-center py-5 text-xl`}>
-          Select a Ride - {travelTimeInformation?.distance.text}les
+          Select a Ride - {travelTimeInformation?.distance?.text}les
         </Text>
       </View>
       <FlatList
@@ -73,7 +73,7 @@ const RideOptionsCard = () => {
         renderItem={({ item: { id, image, title, multiplier }, item }) => (
           <TouchableOpacity
             onPress={() => setSelected(item)}
-            style={tw`flex-row justify-between items-center px-6 ${
+            style={tw`flex-row justify-between items-center px-4 ${
               id === selected?.id ? "bg-gray-200" : ""
             }`}
           >
@@ -85,10 +85,10 @@ const RideOptionsCard = () => {
               }}
               source={{ uri: image }}
             />
-            <View style={tw`-ml-6`}>
+            <View style={tw`-ml-4`}>
               <Text style={tw`text-lg font-semibold`}>{title}</Text>
               <Text style={tw`text-sm text-gray-500`}>
-                {travelTimeInformation?.duration.text} travel time
+                {travelTimeInformation?.duration?.text} travel time
               </Text>
             </View>
             <Text style={tw`text-base font-semibold`}>
@@ -96,7 +96,7 @@ const RideOptionsCard = () => {
                 style: "currency",
                 currency: "ETB",
               }).format(
-                ((travelTimeInformation?.duration.value || 0) *
+                ((travelTimeInformation?.duration?.value || 0) *
                   SURGE_CHARGE_RATE *
                   multiplier) /
                   100
