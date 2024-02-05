@@ -1,8 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
 import tw from "tailwind-react-native-classnames";
-import { useSelector } from "react-redux";
-import { selectDestination, selectOrigin } from "../slices/navSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectDestination,
+  selectOrigin,
+  setTravelTimeInformation,
+} from "../slices/navSlice";
 import { LocationType } from "../types/types";
 import MapViewDirections from "react-native-maps-directions";
 // @ts-ignore
@@ -12,14 +16,40 @@ const Map: React.FC = () => {
   const origin: LocationType | null = useSelector(selectOrigin);
   const destination: LocationType | null = useSelector(selectDestination);
   const mapRef = useRef<MapView | null>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!origin || !destination || !mapRef.current) return;
+    if (!origin || !destination) return;
 
-    mapRef.current.fitToSuppliedMarkers(["origin", "destination"], {
-      edgePadding: { top: 50, bottom: 50, left: 50, right: 50 },
+    const coordinates = [
+      {
+        latitude: origin.location.lat,
+        longitude: origin.location.lng,
+      },
+      {
+        latitude: destination.location.lat,
+        longitude: destination.location.lng,
+      },
+    ];
+
+    mapRef?.current?.fitToCoordinates(coordinates, {
+      edgePadding: { top: 50, right: 50, bottom: 50, left: 50 }, // Adjust padding as needed
+      animated: true,
     });
   }, [origin, destination]);
+
+  useEffect(() => {
+    if (!origin || !destination) return;
+
+    const getTravelTime = async () => {
+      const res = await fetch(
+        `https://maps.googleapis.com/maps/api/distancematrix/json?destinations=${destination.description}&origins=${origin.description}&units=imperial&key=${GOOGLE_MAPS_APIKEY}`
+      );
+      const responseData = await res.json();
+      dispatch(setTravelTimeInformation(responseData.rows[0].elements[0]));
+    };
+    getTravelTime();
+  }, [origin, destination, GOOGLE_MAPS_APIKEY]);
 
   return (
     <MapView

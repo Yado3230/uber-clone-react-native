@@ -5,3 +5,9 @@ export type LocationType = {
     lng: number;
   };
 } | null;
+
+export type TimeTravelType = {
+  distance: { text: string; value: number };
+  duration: { text: string; value: number };
+  status: string;
+} | null;

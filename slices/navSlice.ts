@@ -1,18 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { LocationType } from "../types/types";
+import { LocationType, TimeTravelType } from "../types/types";
 
 export interface NavState {
   origin: LocationType;
   destination: LocationType;
-  travelTimeInformation: number;
+  travelTimeInformation: TimeTravelType;
 }
 
 const initialState: NavState = {
   origin: null,
   destination: null,
-  travelTimeInformation: 0,
+  travelTimeInformation: null,
 };
 
 const navReducer = createSlice({
@@ -25,7 +25,7 @@ const navReducer = createSlice({
     setDestination: (state, action) => {
       state.destination = action.payload;
     },
-    setTravelTimeInformation: (state, action: PayloadAction<number>) => {
+    setTravelTimeInformation: (state, action) => {
       state.travelTimeInformation = action.payload;
     },
   },
